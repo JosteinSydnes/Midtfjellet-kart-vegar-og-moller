@@ -33,7 +33,11 @@
         margin-left:-50px;
         z-index:5;
     }
-    button {
+	#map-canvas {
+		width:100%;
+		height:105%;
+	}
+	button {
     	display:block;
     	background:#009ba6;
 	    width:100%;
@@ -43,26 +47,24 @@
 	    margin:5px 0;
 	    border-radius:1px;
     }
-	#map-canvas {
-		width:100%;
-		height:105%;
-	}
+    .active {
+	    background:#e81a51;
+    }
     </style>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkYLZxVwhs2hx_vC7X__cx2ri9xoNzY74"></script>
     <script type="text/javascript">
-    
     var map;
     var markers = [];
     var iterator = 0;
-
+    var turkort;
     
     function initialize() {
     	var mapOptions = {
           center: new google.maps.LatLng(59.9270000, 5.3698669),
-          zoom: 13
+          zoom: 13,
+          disableDefaultUI: true
         };
-        
-        var midtfjellet;
         
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     	
@@ -93,21 +95,14 @@
       		
       		new google.maps.LatLng(59.898470, 5.374974)
       	]
-  
-
-      //
-      //
-      //
-      //
-      
-		// Construct the polygon.
-		midtfjellet = new google.maps.Polygon({
+      	// Construct the polygon.
+		var midtfjellet = new google.maps.Polygon({
 			paths: midtfjelletPoly,
-			strokeColor: '#373737',
-			strokeOpacity: 0.25,
-			strokeWeight: 2,
-			fillColor: '#FFE168',
-			fillOpacity: 0.15
+			strokeColor: '#555559',
+			strokeOpacity: 0.45,
+			strokeWeight: 1,
+			fillColor: '#FFE168',//'#009ba6',
+			fillOpacity: 0.1
 		});
 		
 		var roadsCoord = [
@@ -385,8 +380,8 @@
 		var roads = new google.maps.Polyline({
 			path: roadsCoord,
 			geodesic: true,
-			strokeColor: '#009ba6',
-			strokeOpacity: 1.0,
+			strokeColor: '#555559',
+			strokeOpacity: 0.7,
 			strokeWeight: 2
 		});
 		
@@ -501,8 +496,8 @@
 		var roadfrom19 = new google.maps.Polyline({
 			path: roadfrom19Coord,
 			geodesic: true,
-			strokeColor: '#009ba6',
-			strokeOpacity: 1.0,
+			strokeColor: '#555559',
+			strokeOpacity: 0.7,
 			strokeWeight: 2
 		});
 		
@@ -654,8 +649,8 @@
 		var roadfrom26to40 = new google.maps.Polyline({
 			path: roadfrom26to40Coord,
 			geodesic: true,
-			strokeColor: '#009ba6',
-			strokeOpacity: 1.0,
+			strokeColor: '#555559',
+			strokeOpacity: 0.7,
 			strokeWeight: 2
 		});
 		
@@ -792,48 +787,195 @@
 		var roadfrom40to46 = new google.maps.Polyline({
 			path: roadfrom40to46Coord,
 			geodesic: true,
-			strokeColor: '#009ba6',
-			strokeOpacity: 1.0,
+			strokeColor: '#555559',
+			strokeOpacity: 0.7,
 			strokeWeight: 2
 		});
 		
 		var turkortCoord = [
-			new google.maps.LatLng(59.90778, 5.33363),
-			new google.maps.LatLng(59.90656, 5.35013),
-			new google.maps.LatLng(59.90549, 5.35445),
-			new google.maps.LatLng(59.90543, 5.35585),
-			new google.maps.LatLng(59.90571, 5.35705),
-			new google.maps.LatLng(59.90618, 5.35787),
-			new google.maps.LatLng(59.90672, 5.35809),
-			new google.maps.LatLng(59.90894, 5.35844),
-			new google.maps.LatLng(59.9095, 5.35913),
-			new google.maps.LatLng(59.90992, 5.36034),
-			new google.maps.LatLng(59.90999, 5.36194),
-			new google.maps.LatLng(59.90908, 5.36644),	
-			new google.maps.LatLng(59.90859, 5.36760),
-			new google.maps.LatLng(59.90813, 5.36882),
-			new google.maps.LatLng(59.90813, 5.37005),
-			new google.maps.LatLng(59.90831, 5.37191),
-			new google.maps.LatLng(59.90862, 5.37248),
-			new google.maps.LatLng(59.90942, 5.37239),
-			new google.maps.LatLng(59.91103, 5.36981),// B5 Mølle
-			new google.maps.LatLng(59.91561424115657, 5.372869382626792),// B9 Mølle
-			new google.maps.LatLng(59.91618496432948, 5.367334346620987), // B8
-			new google.maps.LatLng(59.91561424115657, 5.372869382626792), // B9
-			new google.maps.LatLng(59.92053031151261, 5.370748327670551), // B13
-			new google.maps.LatLng(59.92100209746455, 5.364580177412558), // B12
-			new google.maps.LatLng(59.92448324831224, 5.369261558909492), // B18
-			new google.maps.LatLng(59.92487196307275, 5.361936047434675), // B17
-			new google.maps.LatLng(59.929070338515, 5.360139216973144), // B22 59.935462, 5.345072
-			new google.maps.LatLng(59.935462, 5.345072),
+			new google.maps.LatLng(59.90764, 5.33365),
+			new google.maps.LatLng(59.90777, 5.33491),
+			new google.maps.LatLng(59.90749, 5.33665),
+			new google.maps.LatLng(59.90649, 5.35020),
+			new google.maps.LatLng(59.90551, 5.35452),
+			new google.maps.LatLng(59.90540, 5.35524),
+			new google.maps.LatLng(59.90542, 5.35597),
+			new google.maps.LatLng(59.90560, 5.35676),
+			new google.maps.LatLng(59.90586, 5.35749),
+			new google.maps.LatLng(59.90616, 5.35781),
+			new google.maps.LatLng(59.90656, 5.35809),
+			new google.maps.LatLng(59.90882, 5.35827),
+			new google.maps.LatLng(59.90910, 5.35852),
+			new google.maps.LatLng(59.90943, 5.35903),
+			new google.maps.LatLng(59.90969, 5.35950),
+			new google.maps.LatLng(59.90983, 5.36000),
+			new google.maps.LatLng(59.90995, 5.36062),
+			new google.maps.LatLng(59.90999, 5.36114),
+			new google.maps.LatLng(59.90995, 5.36214),
+			new google.maps.LatLng(59.90906, 5.36662),
+			new google.maps.LatLng(59.90852, 5.36792),
+			new google.maps.LatLng(59.90822, 5.36850),
+			new google.maps.LatLng(59.90810, 5.36886),
+			new google.maps.LatLng(59.90804, 5.36935),
+			new google.maps.LatLng(59.90806, 5.37056),
+			new google.maps.LatLng(59.90829, 5.37111),
+			new google.maps.LatLng(59.90847, 5.37123),
+			new google.maps.LatLng(59.90863, 5.37121),
+			new google.maps.LatLng(59.90885, 5.37111),
+			new google.maps.LatLng(59.90902, 5.37113),
+			new google.maps.LatLng(59.90921, 5.37123),
+			new google.maps.LatLng(59.91022, 5.37203),
+			new google.maps.LatLng(59.91035, 5.37203),
+			new google.maps.LatLng(59.91056, 5.37196),
+			new google.maps.LatLng(59.91101, 5.37179),
+			new google.maps.LatLng(59.91121, 5.37184),
+			new google.maps.LatLng(59.91133, 5.37194),
+			new google.maps.LatLng(59.91145, 5.37204),
+			new google.maps.LatLng(59.91166, 5.37230),
+			new google.maps.LatLng(59.91185, 5.37249),
+			new google.maps.LatLng(59.91199, 5.37252),
+			new google.maps.LatLng(59.91215, 5.37256),
+			new google.maps.LatLng(59.91275, 5.37257),
+			new google.maps.LatLng(59.91290, 5.37251),
+			new google.maps.LatLng(59.91308, 5.37230),
+			new google.maps.LatLng(59.91325, 5.37215),
+			new google.maps.LatLng(59.91352, 5.37209),
+			new google.maps.LatLng(59.91369, 5.37210),
+			new google.maps.LatLng(59.91470, 5.37258),
+			new google.maps.LatLng(59.91487, 5.37255),
+			new google.maps.LatLng(59.91507, 5.37254),
+			new google.maps.LatLng(59.91530, 5.37240),
+			new google.maps.LatLng(59.91550, 5.37227),
+			new google.maps.LatLng(59.91568, 5.37207),
+			new google.maps.LatLng(59.91605, 5.37148),
+			new google.maps.LatLng(59.91619, 5.37136),
+			new google.maps.LatLng(59.91637, 5.37127),
+			new google.maps.LatLng(59.91683, 5.37114),
+			new google.maps.LatLng(59.91710, 5.37098),
+			new google.maps.LatLng(59.91751, 5.37067),
+			new google.maps.LatLng(59.91769, 5.37067),
+			new google.maps.LatLng(59.91824, 5.37081),
+			new google.maps.LatLng(59.91837, 5.37077),
+			new google.maps.LatLng(59.91854, 5.37062),
+			new google.maps.LatLng(59.91870, 5.37048),
+			new google.maps.LatLng(59.92002, 5.36882),
+			new google.maps.LatLng(59.92019, 5.36870),
+			new google.maps.LatLng(59.92038, 5.36859),
+			new google.maps.LatLng(59.92061, 5.36863),
+			new google.maps.LatLng(59.92089, 5.36883),
+			new google.maps.LatLng(59.92104, 5.36899),
+			new google.maps.LatLng(59.92118, 5.36892),
+			new google.maps.LatLng(59.92129, 5.36860),
+			new google.maps.LatLng(59.92135, 5.36810),
+			new google.maps.LatLng(59.92138, 5.36746),
+			new google.maps.LatLng(59.92144, 5.36716),
+			new google.maps.LatLng(59.92151, 5.36695),
+			new google.maps.LatLng(59.92169, 5.36660),
+			new google.maps.LatLng(59.92213, 5.36593),
+			new google.maps.LatLng(59.92238, 5.36576),
+			new google.maps.LatLng(59.92267, 5.36568),
+			new google.maps.LatLng(59.92286, 5.36579),
+			new google.maps.LatLng(59.92311, 5.36597),
+			new google.maps.LatLng(59.92355, 5.36641),
+			new google.maps.LatLng(59.92378, 5.36652),
+			new google.maps.LatLng(59.92398, 5.36651),
+			new google.maps.LatLng(59.92419, 5.36642),
+			new google.maps.LatLng(59.92435, 5.36626),
+			new google.maps.LatLng(59.92456, 5.36590),
+			new google.maps.LatLng(59.92476, 5.36528),
+			new google.maps.LatLng(59.92506, 5.36388),
+			new google.maps.LatLng(59.92520, 5.36361),
+			new google.maps.LatLng(59.92546, 5.36329),
+			new google.maps.LatLng(59.92575, 5.36312),
+			new google.maps.LatLng(59.92597, 5.36315),
+			new google.maps.LatLng(59.92649, 5.36337),
+			new google.maps.LatLng(59.92681, 5.36327),
+			new google.maps.LatLng(59.92726, 5.36272),
+			new google.maps.LatLng(59.92756, 5.36267),
+			new google.maps.LatLng(59.92797, 5.36252),
+			new google.maps.LatLng(59.92832, 5.36198),
+			new google.maps.LatLng(59.92853, 5.36125),
+			new google.maps.LatLng(59.92878, 5.36101),
+			new google.maps.LatLng(59.92908, 5.36055),
+			new google.maps.LatLng(59.92918, 5.36023),
+			new google.maps.LatLng(59.92923, 5.35970),
+			new google.maps.LatLng(59.92923, 5.35873),
+			new google.maps.LatLng(59.92910, 5.35830),
+			new google.maps.LatLng(59.92887, 5.35771),
+			new google.maps.LatLng(59.92879, 5.35734),
+			new google.maps.LatLng(59.92894, 5.35696),
+			new google.maps.LatLng(59.92927, 5.35660),
+			new google.maps.LatLng(59.92940, 5.35663),
+			new google.maps.LatLng(59.93009, 5.35674),
+			new google.maps.LatLng(59.93029, 5.35663),
+			new google.maps.LatLng(59.93046, 5.35644),
+			new google.maps.LatLng(59.93063, 5.35621),
+			new google.maps.LatLng(59.93082, 5.35579),
+			new google.maps.LatLng(59.93089, 5.35542),
+			new google.maps.LatLng(59.93049, 5.35504),
+			new google.maps.LatLng(59.93041, 5.35486),
+			new google.maps.LatLng(59.93008, 5.35471),
+			new google.maps.LatLng(59.92981, 5.35294),
+			new google.maps.LatLng(59.93006, 5.35188),
+			new google.maps.LatLng(59.93005, 5.35119),
+			new google.maps.LatLng(59.92992, 5.35084),
+			new google.maps.LatLng(59.92969, 5.35046),
+			new google.maps.LatLng(59.92946, 5.34979),
+			new google.maps.LatLng(59.92919, 5.34842),
+			new google.maps.LatLng(59.92885, 5.34751),
+			new google.maps.LatLng(59.92854, 5.34659),
+			new google.maps.LatLng(59.92884, 5.34543),
+			new google.maps.LatLng(59.92865, 5.34363),
+			new google.maps.LatLng(59.92872, 5.34322),
+			new google.maps.LatLng(59.92887, 5.34295),
+			new google.maps.LatLng(59.92899, 5.34282),
+			new google.maps.LatLng(59.92932, 5.34294),
+			new google.maps.LatLng(59.92948, 5.34297),
+			new google.maps.LatLng(59.92977, 5.34288),
+			new google.maps.LatLng(59.93005, 5.34278),
+			new google.maps.LatLng(59.93032, 5.34253),
+			new google.maps.LatLng(59.93054, 5.34224),
+			new google.maps.LatLng(59.93076, 5.34193),
+			new google.maps.LatLng(59.93130, 5.34128),
+			new google.maps.LatLng(59.93163, 5.34083),
+			new google.maps.LatLng(59.93186, 5.34065),
+			new google.maps.LatLng(59.93252, 5.34035),
+			new google.maps.LatLng(59.93273, 5.34022),
+			new google.maps.LatLng(59.93302, 5.33989),
+			new google.maps.LatLng(59.93358, 5.33894),
+			new google.maps.LatLng(59.93358, 5.33894),
+			new google.maps.LatLng(59.93499, 5.33720),
+			new google.maps.LatLng(59.93510, 5.33606)
 		];
 		
-		var turkort = new google.maps.Polyline({
+		var sentrum = new google.maps.Marker({
+			position: new google.maps.LatLng(59.91720, 5.31662),
+			map: map,
+			icon: {
+		      path: google.maps.SymbolPath.CIRCLE,
+		      scale: 7,
+		      strokeColor: '#555559'
+		    },
+			title: 'Fitjar Sentrum'
+		});
+		
+		var kontoret = new google.maps.Marker({
+			position: new google.maps.LatLng(59.93485, 5.33648),
+			map: map,
+			icon: {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 7,
+				strokeColor: '#009ba6'
+			},
+			title: 'Midtfjellet Vindkraft - Kontorer'
+		});
+		
+		turkort = new google.maps.Polyline({
 			path: turkortCoord,
 			geodesic: true,
-			strokeColor: '#ff0000',
+			strokeColor: '#E7194F',
 			strokeOpacity: 1.0,
-			strokeWeight: 1
+			strokeWeight: 4
 		});
 
 		midtfjellet.setMap(map);
@@ -841,12 +983,17 @@
 		roadfrom19.setMap(map);
 		roadfrom26to40.setMap(map);
 		roadfrom40to46.setMap(map);
-		//turkort.setMap(map);
-      	setMarkers(map, mills);
-      	
-      	
-      }
-
+		
+    }// End initialize
+    
+    function addturkort() {
+	    turkort.setMap(map);
+    }
+    
+    function removeturkort() {
+	    turkort.setMap(null);
+    }
+    
 	var mills = [
 		['B1', 59.90028061845994, 5.378614709443198, 376],
 		['B2', 59.90443025992752, 5.377067341572741, 328],
@@ -898,12 +1045,13 @@
 	  for (var i = 0; i < mills.length; i++) {
 	    setTimeout(function() {
 	      addMarker();
-	    }, i * 50);
+	    }, i * 10);
 	  }
+	  iterator = 0;
 	}
 	function addMarker() {
 		var image = {
-			url: 'wind2.png',
+			url: 'wind2_green.png',
 			size: new google.maps.Size(15, 21),
 			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(8, 21)
@@ -913,21 +1061,58 @@
 			map: map,
 			draggable: false,
 			icon: image,
-			title: 'Mølle ' + mills[iterator][0] + ' - ' + mills[iterator][3] + 'Moh',
+			title: 'Mølle ' + mills[iterator][0] + ' - ' + mills[iterator][3] + ' Moh',
 			animation: google.maps.Animation.DROP
 		}));
 		iterator++;
 	}
 	
-	google.maps.event.addDomListener(window, 'load', initialize);
+	function removeMarker() {
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);	
+		}
+	}
+
+	//google.maps.event.addDomListener(window, 'load', initialize);
+	
+	// Do some jQuery and take controll
+	$(document).ready(function() {
+		initialize();
+		
+		var onoffMills = false;
+		$("#mills").on('click', function() {
+			$(this).toggleClass('active');
+			if(onoffMills === false) {
+				drop();
+				onoffMills = true;
+			}
+			else {
+				removeMarker();
+				onoffMills = false;
+			}
+		});
+		
+		var onoffTur = false;
+		$("#turkort").on('click', function() {
+			$(this).toggleClass('active');
+			if(onoffTur === false) {
+				addturkort();
+				onoffTur = true;
+			}
+			else {
+				removeturkort();
+				onoffTur = false;
+			}
+		});
+	});
     </script>
   </head>
   <body>
   	<div id="map-wrap">
     	<div id="panel" style="margin-left: -52px">
-	    	<button id="drop" onclick="drop()">Møllene</button>
+	    	<button id="mills">Møllene</button>
 	    	
-	    	<button id="drop" onclick="drop()">Turløype Kort</button>
+	    	<button id="turkort">Turløype Kort</button>
       	</div>
 
     	<div id="map-canvas"/>
